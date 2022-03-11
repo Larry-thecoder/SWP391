@@ -1,23 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Mr.Khuong
- */
 public class MainController extends HttpServlet {
-
     private static final String ERROR = "error.jsp";
     private static final String LOGIN = "LoginController";
     private static final String LOGOUT = "LogoutController";
@@ -40,12 +29,9 @@ public class MainController extends HttpServlet {
     private static final String ST_TOPICDES_UPDATE = "UpdateTopicDescriptionController";
     private static final String ST_TOPICDES_CREATE = "CreateTopicDescriptionController";
     
-    //private static final String UPDATE_TOPIC = "UpdateTopicController";
-    //private static final String UPDATE_TOPIC_DES = "UpdateTopicDescriptionController";
-    private static final String WORD_GENERATOR_C = "WordGeneratorController";
-    private static final String DOWNLOAD_FILE = "DownloadFileController";
+    private static final String ST_VIEW_TOPICDES_APPROVED = "ViewTopicDescriptionsApprovedController";
+    private static final String DOWNLOAD_FILE_CONTROLLER= "DownloadFileController";
     
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -89,10 +75,10 @@ public class MainController extends HttpServlet {
             }else if ("CreateTopicDescriptionController".equals(action)) {
                 url = ST_TOPICDES_CREATE;    
                 
-            }else if ("DownloadFileController".equals(action)) {
-                url = DOWNLOAD_FILE;
-            }else if ("WordGeneratorController".equals(action)) {
-                url = WORD_GENERATOR_C;
+            } else if (ST_VIEW_TOPICDES_APPROVED.equals(action)) {
+                url = ST_VIEW_TOPICDES_APPROVED;
+            } else if (DOWNLOAD_FILE_CONTROLLER.equals(action)) {
+                url= DOWNLOAD_FILE_CONTROLLER;
             }
         } catch (Exception e) {
             log("Error at MainController:" + e.toString());

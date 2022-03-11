@@ -6,14 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.NamingException;
 import utils.DBUtils;
 
 public class TopicDescriptionDAO {
-//    public static final String LOGIN = "SELECT fullName, roleID FROM tblUsers "
-//                                     + "WHERE userID=? AND password=? AND status=?";
     public static final String SEARCH = "SELECT descriptionID, approverID, details, descriptionStatus FROM tblSD "
                                       + "WHERE descriptionID LIKE ?";
+    public static final String SEARCH_APPROVED = "SELECT descriptionID, details, descriptionStatus FROM tblSD "
+                                               + "WHERE descriptionStatus=?";
     public static final String DELETE = "DELETE tblSD "
                                       + "WHERE descriptionID=?";
     public static final String UPDATE = "UPDATE tblSD SET approverID=?, details=?, descriptionStatus=? "
@@ -24,34 +23,7 @@ public class TopicDescriptionDAO {
                                                + "WHERE topicName=?";
     public static final String INSERT = "INSERT INTO tblSD(descriptionID, approverID, details, descriptionStatus) "
                                       + "VALUES(?,?,?,?)";
-    
-//    public boolean insertVer2(TopicDTO topic) throws SQLException, ClassNotFoundException, NamingException {
-//        boolean check = false;
-//        Connection conn = null;
-//        PreparedStatement pst = null;
-//        try {
-//            conn = DBUtils.getConnection();
-//            if (conn != null) {
-//                pst = conn.prepareStatement(INSERT);
-//                pst.setString(1, user.getUserID());
-//                pst.setString(2, user.getFullName());
-//                pst.setString(3, user.getRoleID());
-//                pst.setString(4, user.getPassword());
-//                pst.setBoolean(5, user.isStatus());
-//                check= pst.executeUpdate()>0? true : false;
-//            }
-//        } finally {
-//            if (pst != null) {
-//                pst.close();
-//            }
-//            if (conn != null) {
-//                conn.close();
-//            }
-//        }
-//
-//        return check;
-//    }
-    
+
     public boolean insert(TopicDescriptionDTO TP) throws SQLException {
         boolean check = false;
         Connection conn = null;
@@ -112,42 +84,6 @@ public class TopicDescriptionDAO {
         return check;
     }
     
-//    public UserDTO checkLogin(String userID, String password) throws SQLException {
-//        UserDTO user = null;
-//        Connection conn = null;
-//        PreparedStatement pst = null;
-//        ResultSet rs = null;
-//        try {
-//            conn = DBUtils.getConnection();
-//            if (conn != null) {
-//                pst = conn.prepareStatement(LOGIN);
-//                pst.setString(1, userID);
-//                pst.setString(2, password);
-//                pst.setBoolean(3, true);
-//                rs = pst.executeQuery();
-//                if (rs.next()) {
-//                    String fullName= rs.getString("fullName");
-//                    String roleID= rs.getString("roleID");
-//                    user= new UserDTO(userID, fullName, roleID, "***", true);
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (rs != null) {
-//                rs.close();
-//            }
-//            if (pst != null) {
-//                pst.close();
-//            }
-//            if (conn != null) {
-//                conn.close();
-//            }
-//        }
-//
-//        return user;
-//    }
-
     public List<TopicDescriptionDTO> getListUser(String search) throws SQLException {
         List<TopicDescriptionDTO> list = new ArrayList<>();
         Connection conn = null;
@@ -269,5 +205,39 @@ public class TopicDescriptionDAO {
         }
         
         return TP;
+    }
+
+    public List<TopicDescriptionDTO> getListTopicDescriptionApproved() throws SQLException {
+        List<TopicDescriptionDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                pst= conn.prepareStatement(SEARCH_APPROVED);
+                pst.setString(1, "Approved");
+                rs= pst.executeQuery();
+                while (rs.next()) {                    
+                    String descriptionID= rs.getString("descriptionID");
+                    String details= rs.getString("details");
+                    String descriptionStatus= rs.getString("descriptionStatus");
+                    list.add(new TopicDescriptionDTO(descriptionID, details, descriptionStatus));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (pst != null) {
+                pst.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return list;
     }
 }
