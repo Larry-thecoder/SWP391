@@ -10,7 +10,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Page</title>
-        <link rel="stylesheet" href="Style/loginpage.css">
+        <link href="../myStyle.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <link rel="shortcut icon" href="../favicon.ico"/>
     </head>
     <body>
         <!--        <form action="MainController" method="POST">
@@ -20,28 +23,27 @@
                     <input type="reset" value="Reset"/>
                 </form>-->
 
-        <div class="center">
-            <h1>Login</h1>
-            <form action="MainController" method="POST">
-                <div class="txt_field">
-                    <input type="text" name="accountID" placeholder="User ID Here"/>
-                    <span></span>
-                    <label>User ID</label>
-                </div>
-                <div class="txt_field">
-                    <input type="password" name="password" placeholder="Password Here"/>
-                    <span></span>
-                    <label>Password</label>
-                </div>
-                <!--                <div class="pass">Forgot Password?</div>-->
-                <input type="submit" name="action" value="Login"/>
-                <!--                <input type="reset" value="Reset"/>-->
-                <div class="signup_link">
-                    Not a member? <a href="#">Sign Up</a>
-                </div>
-            </form>
+        <div class="container">
+            <div class="container-login">
+                <h1>Login</h1>
+                <form action="MainController" method="POST">
+                    <div class="form-group">
+                        <label>User ID</label>
+                        <input type="text" class="form-control" name="accountID" placeholder="Enter user ID"/>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Enter password"/>
+                    </div>
+                    <!--                <div class="pass">Forgot Password?</div>-->
+                    <input type="submit" name="action" value="Login"/>
+                    <!--                <input type="reset" value="Reset"/>-->
+                    <div class="signup_link">
+                        Not a member? <a href="#">Sign Up</a>
+                    </div>
+                </form>
+            </div>
         </div>
-
-
     </body>
 </html>
