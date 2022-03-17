@@ -1,42 +1,42 @@
 package controller;
 
-
-
+import com.google.gson.Gson;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import topic.TopicDAO;
-import topic.TopicDTO;
+import java.lang.reflect.Type;
+import com.google.gson.reflect.TypeToken;
+import topicDescription.SelectionCriteriaDAO;
 
-@WebServlet(name = "UpdateTopicController", urlPatterns = {"/UpdateTopicController"})
-public class UpdateTopicController extends HttpServlet {
-    private static final String ERROR = "staffTopic.jsp";
-    private static final String SUCCESS = "ViewTopicController";
+@WebServlet(name = "ViewSelectionCriteriaController", urlPatterns = {"/ViewSelectionCriteriaController"})
+public class ViewSelectionCriteriaController extends HttpServlet {
+    private static final String ERROR = "selectionCriteria.jsp";
+    private static final String SUCCESS = "selectionCriteria.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String subjectID = request.getParameter("subjectID");
-            String subjectName = request.getParameter("subjectName");
-            String lectureID = request.getParameter("lectureID");
+            String profession = request.getParameter("profession");
+            SelectionCriteriaDAO dao = new SelectionCriteriaDAO();
+            String details= dao.getDetails(profession);
+            if (!details.isEmpty()) {
+                Gson g = new Gson();
+                Type listType = new TypeToken<ArrayList<String>>(){}.getType();
+                List<String> selectionCriteria= g.fromJson(details, listType);
 
-            TopicDTO topic = new TopicDTO(subjectID, subjectName, lectureID);
-            TopicDAO dao = new TopicDAO();
-
-            boolean check = dao.update(topic);
-            if (check) {
+                request.setAttribute("GRADING", selectionCriteria.get(0));
+                request.setAttribute("OBJECTIVES", selectionCriteria.get(1));
                 url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at UpdateTopicController: " + e.toString());
+            log("Error at ViewSelectionCriteriaController:" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -54,11 +54,7 @@ public class UpdateTopicController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdateTopicController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -72,11 +68,7 @@ public class UpdateTopicController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdateTopicController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -8,8 +8,8 @@ public class TopicDescriptionDetails {
     private String profession;
     private List<String> special;
     private String kindOfPersonMakeRegisters;
-    private List<Supervisor> supervisors;
-    private List<Student> students;
+    private List<SupervisorDTO> supervisors;
+    private List<StudentDTO> students;
     
     private String thesisNameEnglish;
     private String thesisNameVN;
@@ -26,7 +26,7 @@ public class TopicDescriptionDetails {
     public TopicDescriptionDetails() {
     }
 
-    public TopicDescriptionDetails(String className, List<String> durationTime, String profession, List<String> special, String kindOfPersonMakeRegisters, List<Supervisor> supervisors, List<Student> students, String thesisNameEnglish, String thesisNameVN, String thesisNameAbbr, String mainContent_Theory, String mainContent_Practice, String otherComment, String signingPlace, String signedDate) {
+    public TopicDescriptionDetails(String className, List<String> durationTime, String profession, List<String> special, String kindOfPersonMakeRegisters, List<SupervisorDTO> supervisors, List<StudentDTO> students, String thesisNameEnglish, String thesisNameVN, String thesisNameAbbr, String mainContent_Theory, String mainContent_Practice, String otherComment, String signingPlace, String signedDate) {
         this.className = className;
         this.durationTime = durationTime;
         this.profession = profession;
@@ -84,19 +84,19 @@ public class TopicDescriptionDetails {
         this.kindOfPersonMakeRegisters = kindOfPersonMakeRegisters;
     }
 
-    public List<Supervisor> getSupervisors() {
+    public List<SupervisorDTO> getSupervisors() {
         return supervisors;
     }
 
-    public void setSupervisors(List<Supervisor> supervisors) {
+    public void setSupervisors(List<SupervisorDTO> supervisors) {
         this.supervisors = supervisors;
     }
 
-    public List<Student> getStudents() {
+    public List<StudentDTO> getStudents() {
         return students;
     }
 
-    public void setStudents(List<Student> students) {
+    public void setStudents(List<StudentDTO> students) {
         this.students = students;
     }
 

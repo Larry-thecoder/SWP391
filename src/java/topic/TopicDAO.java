@@ -6,51 +6,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.NamingException;
 import utils.DBUtils;
 
 public class TopicDAO {
-    public static final String LOGIN = "SELECT fullName, roleID FROM tblUsers "
-                                     + "WHERE userID=? AND password=? AND status=?";
-    public static final String SEARCH = "SELECT subjectID, subjectName, descriptionID, lectureID FROM tblSubject "
+    public static final String SEARCH = "SELECT subjectID, subjectName, lectureID FROM tblSubject "
                                       + "WHERE subjectName LIKE ?";
     public static final String DELETE = "DELETE tblSubject "
                                       + "WHERE subjectID=?";
-    public static final String UPDATE = "UPDATE tblSubject SET subjectName=?, descriptionID=?, lectureID=? "
+    public static final String UPDATE = "UPDATE tblSubject SET subjectName=?, lectureID=? "
                                       + "WHERE subjectID=?";
-    public static final String GET_TOPIC_INFO = "SELECT subjectName, descriptionID, lectureID FROM tblSubject "
-                                             + "WHERE subjectID=?";
+    public static final String GET_TOPIC_INFO = "SELECT subjectName, lectureID FROM tblSubject "
+                                              + "WHERE subjectID=?";
     public static final String CHECK_DUPLICATE = "SELECT topicName FROM tblSubject "
                                                + "WHERE topicName=?";
-    public static final String INSERT = "INSERT INTO tblSubject(subjectID, subjectName, descriptionID, lectureID) "
+    public static final String INSERT = "INSERT INTO tblSubject(subjectID, subjectName, lectureID) "
                                       + "VALUES(?,?,?,?)";
-    
-//    public boolean insertVer2(TopicDTO topic) throws SQLException, ClassNotFoundException, NamingException {
-//        boolean check = false;
-//        Connection conn = null;
-//        PreparedStatement pst = null;
-//        try {
-//            conn = DBUtils.getConnection();
-//            if (conn != null) {
-//                pst = conn.prepareStatement(INSERT);
-//                pst.setString(1, user.getUserID());
-//                pst.setString(2, user.getFullName());
-//                pst.setString(3, user.getRoleID());
-//                pst.setString(4, user.getPassword());
-//                pst.setBoolean(5, user.isStatus());
-//                check= pst.executeUpdate()>0? true : false;
-//            }
-//        } finally {
-//            if (pst != null) {
-//                pst.close();
-//            }
-//            if (conn != null) {
-//                conn.close();
-//            }
-//        }
-//
-//        return check;
-//    }
     
     public boolean insert(TopicDTO topic) throws SQLException {
         boolean check = false;
@@ -62,8 +32,7 @@ public class TopicDAO {
                 pst = conn.prepareStatement(INSERT);
                 pst.setString(1, topic.getTopicID());
                 pst.setString(2, topic.getTopicName());
-                pst.setString(3, topic.getDescriptionID());
-                pst.setString(4, topic.getLecturerID());
+                pst.setString(3, topic.getLecturerID());
                 check= pst.executeUpdate()>0? true : false;
             }
         } catch (Exception e) {
@@ -111,42 +80,6 @@ public class TopicDAO {
 
         return check;
     }
-    
-//    public UserDTO checkLogin(String userID, String password) throws SQLException {
-//        UserDTO user = null;
-//        Connection conn = null;
-//        PreparedStatement pst = null;
-//        ResultSet rs = null;
-//        try {
-//            conn = DBUtils.getConnection();
-//            if (conn != null) {
-//                pst = conn.prepareStatement(LOGIN);
-//                pst.setString(1, userID);
-//                pst.setString(2, password);
-//                pst.setBoolean(3, true);
-//                rs = pst.executeQuery();
-//                if (rs.next()) {
-//                    String fullName= rs.getString("fullName");
-//                    String roleID= rs.getString("roleID");
-//                    user= new UserDTO(userID, fullName, roleID, "***", true);
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (rs != null) {
-//                rs.close();
-//            }
-//            if (pst != null) {
-//                pst.close();
-//            }
-//            if (conn != null) {
-//                conn.close();
-//            }
-//        }
-//
-//        return user;
-//    }
 
     public List<TopicDTO> getListTopic(String search) throws SQLException {
         List<TopicDTO> list = new ArrayList<>();
@@ -162,9 +95,8 @@ public class TopicDAO {
                 while (rs.next()) {                    
                     String subjectID= rs.getString("subjectID");
                     String subjectName= rs.getString("subjectName");
-                    String descriptionID= rs.getString("descriptionID");
                     String lectureID= rs.getString("lectureID");
-                    list.add(new TopicDTO(subjectID, subjectName, descriptionID, lectureID));
+                    list.add(new TopicDTO(subjectID, subjectName, lectureID));
                 }
             }
         } catch (Exception e) {
@@ -217,9 +149,8 @@ public class TopicDAO {
             if (conn != null) {
                 pst = conn.prepareStatement(UPDATE);
                 pst.setString(1, topic.getTopicName());
-                pst.setString(2, topic.getDescriptionID());
-                pst.setString(3, topic.getLecturerID());
-                pst.setString(4, topic.getTopicID());
+                pst.setString(2, topic.getLecturerID());
+                pst.setString(3, topic.getTopicID());
                 check= pst.executeUpdate() > 0? true : false;
             }
         } catch (Exception e) {
@@ -249,9 +180,8 @@ public class TopicDAO {
                 rs = pst.executeQuery();
                 if (rs.next()) {
                     String subjectName= rs.getString("subjectName");
-                    String descriptionID= rs.getString("descriptionID");
                     String lectureID= rs.getString("lectureID");
-                    topic = new TopicDTO(subjectID, subjectName, descriptionID, lectureID);
+                    topic = new TopicDTO(subjectID, subjectName, lectureID);
                 }
             }
         } catch (Exception e) {

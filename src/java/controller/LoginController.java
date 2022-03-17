@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import account.AccountDAO;
 import account.AccountDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,18 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author Mr.Khuong
- */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
 
     private static final String ERROR = "login.jsp";
     private static final String LECTURE = "lecture.jsp";
     private static final String STAFF = "staff.jsp";
-    private static final String LC = "Lecture";
+    private static final String APPROVER_PAGE = "approver.jsp";
+    private static final String LC = "Lecturer";
     private static final String ST = "Staff";
+    private static final String APPROVER = "Approver";
       
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,11 +38,12 @@ public class LoginController extends HttpServlet {
                 String role = loginAc.getRole();
                 if(LC.equals(role)){
                     url = LECTURE;
-                }else if(ST.equals(role)){
+                } else if(ST.equals(role)){
                     url = STAFF;
-                }
-                else{
-                    request.setAttribute("ERROR", "Your role is not support");
+                } else if(APPROVER.equals(role)){
+                    url = APPROVER_PAGE;
+                } else{
+                    request.setAttribute("ERROR", "Your role is not supportted!");
                 }
             }
         }catch(Exception e){

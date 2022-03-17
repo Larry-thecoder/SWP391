@@ -24,13 +24,33 @@ public class MainController extends HttpServlet {
     private static final String ST_TOPIC_UPDATE = "UpdateTopicController";
     private static final String ST_TOPIC_CREATE = "CreateTopicController";
     
+    // Lecturer
     private static final String ST_TOPICDES_VIEW = "ViewTopicDescriptionController";
     private static final String ST_TOPICDES_DELETE = "DeleteTopicDescriptionController";
-    private static final String ST_TOPICDES_UPDATE = "UpdateTopicDescriptionController";
-    private static final String ST_TOPICDES_CREATE = "CreateTopicDescriptionController";
+    private static final String TOPICDES_UPDATE = "Update Topic Description";
+    private static final String TOPICDES_UPDATE_CONTROLLER = "UpdateTopicDescriptionController";
+    private static final String TOPICDES_CREATE = "Add new Topic Description";
+    private static final String TOPICDES_CREATE_CONTROLLER = "CreateTopicDescriptionController";
+    private static final String TOPICDES_LOAD_FORM = "LoadFormCreateTopicDesController";
+    private static final String VIEW_DOC_RETURNED_CONTROLLER = "ViewDocumentsReturnedController";
+    private static final String VIEW_COMMENTS_CONTROLLER = "ViewCommentsController";
+    private static final String VIEW_RETURNED_CONTROLLER = "ViewReturnedDetailsController";
     
+    // Approver
+    private static final String ST_VIEW_TOPICDES_REVIEW = "ViewTopicDescriptionsReviewController";
+    private static final String ST_VIEW_TOPICDES_DETAILS = "ViewTopicDesDetailsController";
+    private static final String APPROVE = "Approve";
+    private static final String REJECT = "Reject";
+    private static final String APPROVE_TOPIC_DES_CONTROLLER = "ApproveTopicDesController";
+    private static final String REJECT_TOPIC_DES_CONTROLLER = "RejectTopicDesController";
+    private static final String VIEW_SELECTION_CRITERIA_CONTROLLER = "ViewSelectionCriteriaController";
+    
+    // StaffDT
     private static final String ST_VIEW_TOPICDES_APPROVED = "ViewTopicDescriptionsApprovedController";
     private static final String DOWNLOAD_FILE_CONTROLLER= "DownloadFileController";
+    private static final String ADD_SELECTION_CRITERIA = "Add new Selection Criteria";
+    private static final String ADD_SELECTION_CRITERIA_CONTROLLER = "AddSelectionCriteriaController";
+    private static final String LOAD_FORM_SELECTION_CRITERIA_CONTROLLER = "LoadFormCreateSelCritController";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -70,15 +90,38 @@ public class MainController extends HttpServlet {
                 url = ST_TOPICDES_VIEW;
             }else if ("DeleteTopicDescriptionController".equals(action)) {
                 url = ST_TOPICDES_DELETE;
-            }else if ("UpdateTopicDescriptionController".equals(action)) {
-                url = ST_TOPICDES_UPDATE;
-            }else if ("CreateTopicDescriptionController".equals(action)) {
-                url = ST_TOPICDES_CREATE;    
+            }else if (TOPICDES_UPDATE.equals(action)) {
+                url = TOPICDES_UPDATE_CONTROLLER;
+            }else if (TOPICDES_CREATE.equals(action)) {
+                url = TOPICDES_CREATE_CONTROLLER;    
+            }else if (TOPICDES_LOAD_FORM.equals(action)) {
+                url = TOPICDES_LOAD_FORM;    
+            }else if (VIEW_DOC_RETURNED_CONTROLLER.equals(action)) {
+                url = VIEW_DOC_RETURNED_CONTROLLER;
+            }else if (VIEW_COMMENTS_CONTROLLER.equals(action)) {
+                url = VIEW_COMMENTS_CONTROLLER;
+            }else if (VIEW_RETURNED_CONTROLLER.equals(action)) {
+                url = VIEW_RETURNED_CONTROLLER;
                 
+            } else if (ST_VIEW_TOPICDES_REVIEW.equals(action)) {
+                url = ST_VIEW_TOPICDES_REVIEW;
+            } else if (ST_VIEW_TOPICDES_DETAILS.equals(action)) {
+                url = ST_VIEW_TOPICDES_DETAILS;
+            } else if (APPROVE.equals(action)) {
+                url = APPROVE_TOPIC_DES_CONTROLLER;
+            } else if (REJECT.equals(action)) {
+                url = REJECT_TOPIC_DES_CONTROLLER;
+            } else if (VIEW_SELECTION_CRITERIA_CONTROLLER.equals(action)) {
+                url = VIEW_SELECTION_CRITERIA_CONTROLLER;
+            
             } else if (ST_VIEW_TOPICDES_APPROVED.equals(action)) {
                 url = ST_VIEW_TOPICDES_APPROVED;
             } else if (DOWNLOAD_FILE_CONTROLLER.equals(action)) {
                 url= DOWNLOAD_FILE_CONTROLLER;
+            } else if (ADD_SELECTION_CRITERIA.equals(action)) {
+                url= ADD_SELECTION_CRITERIA_CONTROLLER;
+            } else if (LOAD_FORM_SELECTION_CRITERIA_CONTROLLER.equals(action)) {
+                url= LOAD_FORM_SELECTION_CRITERIA_CONTROLLER;
             }
         } catch (Exception e) {
             log("Error at MainController:" + e.toString());

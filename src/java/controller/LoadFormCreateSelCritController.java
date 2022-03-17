@@ -1,42 +1,32 @@
 package controller;
 
-
-
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import topic.TopicDAO;
-import topic.TopicDTO;
+import topicDescription.SpecialDAO;
 
-@WebServlet(name = "UpdateTopicController", urlPatterns = {"/UpdateTopicController"})
-public class UpdateTopicController extends HttpServlet {
-    private static final String ERROR = "staffTopic.jsp";
-    private static final String SUCCESS = "ViewTopicController";
+@WebServlet(name = "LoadFormCreateSelCritController", urlPatterns = {"/LoadFormCreateSelCritController"})
+public class LoadFormCreateSelCritController extends HttpServlet {
+    private static final String ERROR = "createSelCrit.jsp";
+    private static final String SUCCESS = "createSelCrit.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String subjectID = request.getParameter("subjectID");
-            String subjectName = request.getParameter("subjectName");
-            String lectureID = request.getParameter("lectureID");
-
-            TopicDTO topic = new TopicDTO(subjectID, subjectName, lectureID);
-            TopicDAO dao = new TopicDAO();
-
-            boolean check = dao.update(topic);
-            if (check) {
+            SpecialDAO dao = new SpecialDAO();
+            List<String> professions = dao.getListProfession();
+            if (!professions.isEmpty()) {
+                request.setAttribute("LIST_PROFESSION", professions);
                 url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at UpdateTopicController: " + e.toString());
+            log("Error at LoadFormCreateSelCritController:" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -54,11 +44,7 @@ public class UpdateTopicController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdateTopicController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -72,11 +58,7 @@ public class UpdateTopicController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdateTopicController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

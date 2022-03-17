@@ -2,21 +2,11 @@ package topicDescription;
 
 public class TopicDescriptionDTO {
     private String topicDescrID;
-    private String approverID;
     private String details;
     private String topicDescrStatus;
 
     public TopicDescriptionDTO() {
     }
-
-    public TopicDescriptionDTO(String topicDescrID, String approverID, String details, String topicDescrStatus) {
-        this.topicDescrID = topicDescrID;
-        this.approverID = approverID;
-        this.details = details;
-        this.topicDescrStatus = topicDescrStatus;
-    }
-
-    
     
     public TopicDescriptionDTO(String topicDescrID, String details, String topicDescrStatus) {
         this.topicDescrID = topicDescrID;
@@ -47,14 +37,4 @@ public class TopicDescriptionDTO {
     public void setTopicDescrStatus(String topicDescrStatus) {
         this.topicDescrStatus = topicDescrStatus;
     }
-
-    public String getApproverID() {
-        return approverID;
-    }
-
-    public void setApproverID(String approverID) {
-        this.approverID = approverID;
-    }
-    
-    
 }

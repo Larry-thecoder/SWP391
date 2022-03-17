@@ -1,6 +1,5 @@
 package controller;
 
-import account.AccountDTO;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,30 +10,26 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import topicDescription.ApproverTableRow;
 import topicDescription.SupervisorDTO;
 import topicDescription.TopicDescriptionDAO;
 import topicDescription.TopicDescriptionDTO;
 import topicDescription.TopicDescriptionDetails;
 
-@WebServlet(name = "ViewTopicDescriptionController", urlPatterns = {"/ViewTopicDescriptionController"})
-public class ViewTopicDescriptionController extends HttpServlet {
-    private static final String ERROR = "lecture.jsp";
-    private static final String SUCCESS = "lecture.jsp";
+@WebServlet(name = "ViewTopicDescriptionsReviewController", urlPatterns = {"/ViewTopicDescriptionsReviewController"})
+public class ViewTopicDescriptionsReviewController extends HttpServlet {
+    private static final String ERROR = "approver.jsp";
+    private static final String SUCCESS = "approver.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            HttpSession session= request.getSession();
-            AccountDTO loginAcc = (AccountDTO) session.getAttribute("LOGIN_AC");
-            String lecturerID= loginAcc.getAccountID();
             TopicDescriptionDAO dao = new TopicDescriptionDAO();
-            List<TopicDescriptionDTO> listTD = dao.getListTopicDescription(lecturerID);
-            HashMap<String, String> files = new HashMap<>();
+            List<TopicDescriptionDTO> listTD = dao.getListTopicDescriptionByStatus("Pending");
             if (!listTD.isEmpty()) {
+                List<ApproverTableRow> approverTableRows = new ArrayList<>();
                 for (TopicDescriptionDTO topicDescriptionDTO : listTD) {
                     Gson g = new Gson();
                     TopicDescriptionDetails t = g.fromJson(topicDescriptionDTO.getDetails(), TopicDescriptionDetails.class);
@@ -47,14 +42,15 @@ public class ViewTopicDescriptionController extends HttpServlet {
                             fileName += "_" + parts[0];
                         }
                     }
-                    files.put(topicDescriptionDTO.getTopicDescrID(), fileName);
+                    ApproverTableRow atRow= new ApproverTableRow(topicDescriptionDTO.getTopicDescrID(), fileName, t.getProfession());
+                    approverTableRows.add(atRow);
                 }
-                request.setAttribute("PENDING_FILES", files);
+                request.setAttribute("FILES", approverTableRows);
                 
                 url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at ViewTopicDescriptionController:" + e.toString());
+            log("Error at ViewTopicDescriptionsApprovedController:" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

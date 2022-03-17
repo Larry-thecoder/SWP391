@@ -1,9 +1,3 @@
-<%-- 
-    Document   : staff
-    Created on : Jan 20, 2022, 2:33:33 PM
-    Author     : Mr.Khuong
---%>
-
 <%@page import="java.util.List"%>
 <%@page import="project.ProjectDTO"%>
 <%@page import="account.AccountDTO"%>
@@ -14,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Staff Page</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="Style/stylefortable.css">
+        <link rel="stylesheet" href="css/stylefortable.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -182,11 +176,6 @@
                     <a href="https://www.youtube.com/channel/UCfNrlxNgcTZDJ3jZeSSSJxg"><i class="fa fa-youtube"></i></a>
                 </div>
             </div>
-
-
-
         </footer>
-
-
     </body>
 </html>

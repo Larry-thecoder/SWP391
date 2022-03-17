@@ -1,42 +1,38 @@
 package controller;
 
-
-
+import approval.ApprovalDAO;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import topic.TopicDAO;
-import topic.TopicDTO;
+import topicDescription.TopicDescriptionDAO;
+import utils.IDGenerator;
 
-@WebServlet(name = "UpdateTopicController", urlPatterns = {"/UpdateTopicController"})
-public class UpdateTopicController extends HttpServlet {
-    private static final String ERROR = "staffTopic.jsp";
-    private static final String SUCCESS = "ViewTopicController";
+@WebServlet(name = "RejectTopicDesController", urlPatterns = {"/RejectTopicDesController"})
+public class RejectTopicDesController extends HttpServlet {
+    private static final String ERROR = "ViewTopicDescriptionsReviewController";
+    private static final String SUCCESS = "ViewTopicDescriptionsReviewController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String subjectID = request.getParameter("subjectID");
-            String subjectName = request.getParameter("subjectName");
-            String lectureID = request.getParameter("lectureID");
-
-            TopicDTO topic = new TopicDTO(subjectID, subjectName, lectureID);
-            TopicDAO dao = new TopicDAO();
-
-            boolean check = dao.update(topic);
-            if (check) {
+            String approvalID= IDGenerator.generateID(16);
+            String userID = request.getParameter("userID");
+            String topicDesID = request.getParameter("topicDesID");
+            String reason = request.getParameter("reason");
+            TopicDescriptionDAO dao = new TopicDescriptionDAO();
+            boolean check = dao.approveOrReject(topicDesID, "Draft");
+            ApprovalDAO dao2= new ApprovalDAO();
+            boolean check2 = dao2.reject(approvalID, userID, topicDesID, reason);
+            if (check && check2) {
                 url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at UpdateTopicController: " + e.toString());
+            log("Error at RejectTopicDesController" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -54,11 +50,7 @@ public class UpdateTopicController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdateTopicController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -72,11 +64,7 @@ public class UpdateTopicController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(UpdateTopicController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

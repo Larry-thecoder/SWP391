@@ -1,28 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
+import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import topicDescription.StudentDAO;
+import topicDescription.StudentDTO;
+import topicDescription.SupervisorDAO;
+import topicDescription.SupervisorDTO;
 import topicDescription.TopicDescriptionDAO;
 import topicDescription.TopicDescriptionDTO;
+import topicDescription.TopicDescriptionDetails;
 import topicDescription.TopicDescriptionError;
+import utils.IDGenerator;
 
-/**
- *
- * @author Mr.Khuong
- */
 @WebServlet(name = "CreateTopicDescriptionController", urlPatterns = {"/CreateTopicDescriptionController"})
 public class CreateTopicDescriptionController extends HttpServlet {
-
     private static final String ERROR = "createTP.jsp";
     private static final String SUCCESS = "staffTP.jsp";
 
@@ -31,36 +30,71 @@ public class CreateTopicDescriptionController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String descriptionID = request.getParameter("descriptionID");
-            String approverID = request.getParameter("approverID");
-            String details = request.getParameter("details");
-            String descriptionStatus = request.getParameter("descriptionStatus");
+            String descriptionID = IDGenerator.generateID(16);
+            String className = request.getParameter("className");
+            String profession = request.getParameter("profession");
+            String[] special= request.getParameterValues("special[]");
+            List<String> listSpecial= new ArrayList<>();
+            listSpecial.addAll(Arrays.asList(special));
+            
+            String durationTimeFrom = request.getParameter("durationTimeFrom");
+            String durationTimeTo = request.getParameter("durationTimeTo");
+            List<String> durationTime= new ArrayList<>();
+            durationTime.add(durationTimeFrom);
+            durationTime.add(durationTimeTo);
+            
+            String kindOfPersonMakeRegisters = request.getParameter("kindOfPersonMakeRegisters");
+            String[] supervisors= request.getParameterValues("supervisors[]");
+            SupervisorDAO dao= new SupervisorDAO();
+            List<SupervisorDTO> listSupervisors= new ArrayList<>();
+            for (String supervisorEmail : supervisors) {
+                SupervisorDTO supervisorDTO= dao.getSupervisorByEmail(supervisorEmail);
+                if (supervisorDTO!= null) {
+                    listSupervisors.add(supervisorDTO);
+                }
+            }
+            String[] students= request.getParameterValues("students[]");
+            StudentDAO dao2= new StudentDAO();
+            List<StudentDTO> listStudents= new ArrayList<>();
+            for (String studentsEmail : students) {
+                StudentDTO studentDTO= dao2.getStudentByEmail(studentsEmail);
+                if (studentDTO!= null) {
+                    listStudents.add(studentDTO);
+                }
+            }
+            
+            String thesisNameEnglish = request.getParameter("thesisNameEnglish");
+            String thesisNameVN = request.getParameter("thesisNameVN");
+            String thesisNameAbbr = request.getParameter("thesisNameAbbr");
+            
+            String mainContent_Theory = request.getParameter("mainContent_Theory");
+            String mainContent_Practice = request.getParameter("mainContent_Practice");
+            String otherComment = request.getParameter("otherComment");
+            
+            String signingPlace = request.getParameter("signingPlace");
+            String signedDate = request.getParameter("signedDate");
+            String descriptionStatus = "Pending"; //Pending, Approved, Rejected, Draft
             boolean check = true;
             TopicDescriptionError TDError = new TopicDescriptionError();
             if (descriptionID.length() < 0 || descriptionID.length() > 50) {
                 TDError.setTopicDescrID("DescriptionID must be in [1,50]");
                 check = false;
             }
-            if (approverID.length() < 0 || approverID.length() > 50) {
-                TDError.setApproverID("ApproverID must be in [1,50]");
-                check = false;
-            }
-            if (details.length() < 0 || details.length() > 50) {
-                TDError.setDetails("Details must be in [1,50]");
-                check = false;
-            }
-            if (descriptionStatus.length() < 0 || descriptionStatus.length() > 50) {
-                TDError.setTopicDescrStatus("Description Status must be in [1,50]");
-                check = false;
-            }
-            TopicDescriptionDAO dao = new TopicDescriptionDAO();
-            TopicDescriptionDTO checkTD = dao.getTPInfo(descriptionID);
+//            if (details.length() < 0 || details.length() > 50) {
+//                TDError.setDetails("Details must be in [1,50]");
+//                check = false;
+//            }
+            TopicDescriptionDAO dao3 = new TopicDescriptionDAO();
+            TopicDescriptionDTO checkTD = dao3.getTPInfo(descriptionID);
             if (checkTD != null) {
                 TDError.setTopicDescrID("Duplicate DescriptionID!");
                 check = false;
             }
             if (check) {
-                boolean checkInsert = dao.insert(new TopicDescriptionDTO(approverID, approverID, details, descriptionStatus));
+                Gson g = new Gson();
+                TopicDescriptionDetails t = new TopicDescriptionDetails(className, durationTime, profession, listSpecial, kindOfPersonMakeRegisters, listSupervisors, listStudents, thesisNameEnglish, thesisNameVN, thesisNameAbbr, mainContent_Theory, mainContent_Practice, otherComment, signingPlace, signedDate);
+                String details= g.toJson(t, TopicDescriptionDetails.class);
+                boolean checkInsert = dao3.insert(new TopicDescriptionDTO(descriptionID, details, descriptionStatus));
                 if (checkInsert) {
                     url = SUCCESS;
                 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
@@ -16,10 +11,6 @@ import topic.TopicDAO;
 import topic.TopicDTO;
 import topic.TopicError;
 
-/**
- *
- * @author Mr.Khuong
- */
 @WebServlet(name = "CreateTopicController", urlPatterns = {"/CreateTopicController"})
 public class CreateTopicController extends HttpServlet {
 
@@ -33,7 +24,6 @@ public class CreateTopicController extends HttpServlet {
         try {
             String subjectID = request.getParameter("subjectID");
             String subjectName = request.getParameter("subjectName");
-            String descriptionID = request.getParameter("descriptionID");
             String lectureID = request.getParameter("lectureID");
             boolean check = true;
             TopicError TopicError = new TopicError();
@@ -45,22 +35,18 @@ public class CreateTopicController extends HttpServlet {
                 TopicError.setTopicName("Topic Name must be in [1,50]");
                 check = false;
             }
-            if (descriptionID.length() < 0 || descriptionID.length() > 50) {
-                TopicError.setDescriptionID("Description ID must be in [1,50]");
-                check = false;
-            }
             if (lectureID.length() < 0 || lectureID.length() > 50) {
                 TopicError.setLecturerID("Lecture ID must be in [1,50]");
                 check = false;
             }
             TopicDAO dao = new TopicDAO();
-            TopicDTO checkTD = dao.getTopicInfo(descriptionID);
+            TopicDTO checkTD = dao.getTopicInfo(subjectID);
             if (checkTD != null) {
                 TopicError.setTopicID("Duplicate Topic ID!");
                 check = false;
             }
             if (check) {
-                boolean checkInsert = dao.insert(new TopicDTO(subjectID, subjectName, descriptionID, lectureID));
+                boolean checkInsert = dao.insert(new TopicDTO(subjectID, subjectName, lectureID));
                 if (checkInsert) {
                     url = SUCCESS;
                 }

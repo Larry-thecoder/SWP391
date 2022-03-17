@@ -17,8 +17,8 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
-import topicDescription.Student;
-import topicDescription.Supervisor;
+import topicDescription.StudentDTO;
+import topicDescription.SupervisorDTO;
 import topicDescription.TopicDescriptionDAO;
 import topicDescription.TopicDescriptionDTO;
 import topicDescription.TopicDescriptionDetails;
@@ -34,7 +34,7 @@ public class ViewTopicDescriptionsApprovedController extends HttpServlet {
         String url = ERROR;
         try {
             TopicDescriptionDAO dao = new TopicDescriptionDAO();
-            List<TopicDescriptionDTO> listTD = dao.getListTopicDescriptionApproved();
+            List<TopicDescriptionDTO> listTD = dao.getListTopicDescriptionByStatus("Approved");
             if (!listTD.isEmpty()) {
                 HashMap<String, String> downloadFiles = new HashMap<>();
                 int i = 0;
@@ -71,9 +71,9 @@ public class ViewTopicDescriptionsApprovedController extends HttpServlet {
                                                    + "(Sign and full name)");
                     
                     String downloadFileName= "";
-                    List<Supervisor> supervisors= t.getSupervisors();
+                    List<SupervisorDTO> supervisors= t.getSupervisors();
                     if (supervisors!= null && !supervisors.isEmpty()) {
-                        for (Supervisor supervisor : supervisors) {
+                        for (SupervisorDTO supervisor : supervisors) {
                             String[] parts = supervisor.getEmail().split("@");
                             downloadFileName += parts[0] + "_";
                         }
@@ -92,7 +92,7 @@ public class ViewTopicDescriptionsApprovedController extends HttpServlet {
                     document.write(out);
                     //Close document
                     out.close();
-                    System.out.println(downloadFileName + ".docx" + " written successfully");
+//                    System.out.println(downloadFileName + ".docx" + " written successfully");
 
                     downloadFiles.put(downloadFileName +".docx", downloadFileName);
                     i++;
@@ -108,8 +108,8 @@ public class ViewTopicDescriptionsApprovedController extends HttpServlet {
     }
     
     void createParagraph(XWPFDocument document, List<String> topicDescriptionDetailsLines, 
-            List<String> durationTime, List<String> special, List<Supervisor> supervisor, 
-            List<Student> students) {
+            List<String> durationTime, List<String> special, List<SupervisorDTO> supervisor, 
+            List<StudentDTO> students) {
         XWPFParagraph p1 = document.createParagraph();
         p1.setAlignment(ParagraphAlignment.CENTER);
         XWPFRun r1 = p1.createRun();

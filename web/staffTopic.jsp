@@ -1,9 +1,3 @@
-<%-- 
-    Document   : staffTopic
-    Created on : Mar 4, 2022, 7:55:41 AM
-    Author     : Mr.Khuong
---%>
-
 <%@page import="topic.TopicDTO"%>
 <%@page import="account.AccountDTO"%>
 <%@page import="java.util.List"%>
@@ -14,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Topic Page</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="Style/stylefortable.css">
+        <link rel="stylesheet" href="css/stylefortable.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -76,7 +70,6 @@
                         <th>NO</th>
                         <th>Subject ID</th>
                         <th>Subject Name</th>
-                        <th>Description ID</th>
                         <th>Lecture ID</th>
                         <th>Delete</th>
                         <th>Edit</th>
@@ -95,9 +88,6 @@
                         </td>
                         <td>
                             <input type="text" name="subjectName" value="<%= T.getTopicName()%>"/>
-                        </td>
-                        <td>
-                            <input type="text" name="descriptionID" value="<%= T.getDescriptionID()%>"/>
                         </td>
                         <td>
                             <input type="text" name="lectureID" value="<%= T.getLecturerID()%>"/>
@@ -134,7 +124,7 @@
         %>
         <%=error%>
 
-        <a class="lastone" href="MainController?action=CreateTopicController">Create new Topic</br>(Must have a Topic Description ID first!!!)</a>
+        <a class="lastone" href="MainController?action=CreateTopicController">Create new Topic</a>
 
 
         <footer class="footer-distributed">

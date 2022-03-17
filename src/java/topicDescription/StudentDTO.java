@@ -1,19 +1,21 @@
 package topicDescription;
 
-public class Supervisor {
+public class StudentDTO {
     private String fullName;
+    private String studentCode;
     private String phone;
     private String email;
-    private String title;
+    private String roleInGroup;
 
-    public Supervisor() {
+    public StudentDTO() {
     }
 
-    public Supervisor(String fullName, String phone, String email, String title) {
+    public StudentDTO(String fullName, String studentCode, String phone, String email, String roleInGroup) {
         this.fullName = fullName;
+        this.studentCode = studentCode;
         this.phone = phone;
         this.email = email;
-        this.title = title;
+        this.roleInGroup = roleInGroup;
     }
 
     public String getFullName() {
@@ -22,6 +24,14 @@ public class Supervisor {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getStudentCode() {
+        return studentCode;
+    }
+
+    public void setStudentCode(String studentCode) {
+        this.studentCode = studentCode;
     }
 
     public String getPhone() {
@@ -40,11 +50,11 @@ public class Supervisor {
         this.email = email;
     }
 
-    public String getTitle() {
-        return title;
+    public String getRoleInGroup() {
+        return roleInGroup;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setRoleInGroup(String roleInGroup) {
+        this.roleInGroup = roleInGroup;
     }
 }

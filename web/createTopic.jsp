@@ -30,8 +30,6 @@
             <%= error.getTopicID()%></br>
             Topic Name(*)<input type="text" name="subjectName" required=""/>
             <%= error.getTopicName()%></br>
-            Description ID(*)<input type="text" name="descriptionID" required=""/>
-            <%= error.getDescriptionID()%></br>
             Lecture ID(*)<input type="text" name="lectureID" required=""/>
             <%= error.getLecturerID()%></br>
             <input type="submit" name="action" value="CreateTopicController"/></br>
